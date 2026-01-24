@@ -9,6 +9,7 @@ import Foundation
 import FactoryKit
 
 enum SSLPinningDemoStatus {
+    case idle
     case fetching
     case verified
     case failed
@@ -17,15 +18,14 @@ enum SSLPinningDemoStatus {
 class SSLPinningDemoViewModel: ObservableObject {
     @Injected(\.networkClient) private var networkClient
     
-    @Published var status = SSLPinningDemoStatus.fetching
+    @Published var status = SSLPinningDemoStatus.idle
     
     @MainActor
-    func fetch() async throws {
+    func fetch() async {
         do {
             let _ = try await networkClient.fetch(from: "https://badssl.com")
             status = .verified
         } catch {
-            print(error)
             status = .failed
         }
     }

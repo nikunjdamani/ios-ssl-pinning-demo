@@ -1,7 +1,7 @@
 # iOS SSL Pinning Demo
 
 A production-style SSL pinning implementation in iOS using URLSession,
-with SwiftUI as the UI layer and async/await + Combine for networking.
+with SwiftUI as the UI layer and async/await.
 
 ## Why SwiftUI?
 SwiftUI is used only as the presentation layer.

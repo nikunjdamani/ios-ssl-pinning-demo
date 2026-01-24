@@ -13,10 +13,26 @@ struct SSLPinningDemoStatusView: View {
      
     var body: some View {
         VStack {
-            Text("SSL pinning status: \(sslPinningViewModel.status)")
+            Text("SSL Pinning Demo")
+                .font(.title)
+            if sslPinningViewModel.status != SSLPinningDemoStatus.verified {
+                Button ("Verify connection") {
+                    Task {
+                        await sslPinningViewModel.fetch()
+                    }
+                }
+                .padding(10)
+                .background(Color.blue)
+                .cornerRadius(5)
+                .foregroundColor(.white)
+            } else {
+                Text("SSL Connection verified")
+                    .font(.headline)
+            }
         }
-        .task {
-            try? await sslPinningViewModel.fetch()
+        .alert("SSL verification failed", isPresented: Binding(get: { sslPinningViewModel.status == .failed
+        }, set: { _ in sslPinningViewModel.status = .idle })) {
+            Button("Ok") {}
         }
     }
 }
